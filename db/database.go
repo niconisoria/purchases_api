@@ -25,6 +25,16 @@ func (dbp *DBPurchases) GetAll() map[string]interface{} {
 	return localdb
 }
 
+func (dbp *DBPurchases) GetById(key string) (interface{}, error) {
+	if _, ok := localdb[key]; ok {
+		return localdb[key], nil
+	} else {
+		return nil, errors.New(fmt.Sprintf("Purchase with key %v not found ", key))
+		//fmt.Errorf("Purchase with key %v not found ", key)
+
+	}
+}
+
 func init() {
 	fmt.Println("--------------------- INIT db ---------------------")
 	localdb = map[string]interface{}{}

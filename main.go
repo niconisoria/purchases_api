@@ -10,6 +10,7 @@ import (
 )
 
 var router = gin.Default()
+var a = validateString("")
 
 func main() {
 	routes()

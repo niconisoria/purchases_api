@@ -38,11 +38,17 @@ func ReadPurchases(c *gin.Context) {
 	id := c.Param("id")
 	user_id := c.Query("user_id")
 	role := c.GetHeader("role")
-
-	if id == "" {
-		c.JSON(http.StatusBadRequest, "invalid params id")
+	//var a = validateString(id)
+	if id == "" || user_id == "" || role == "" {
+		c.JSON(http.StatusBadRequest, "invalid params")
 		return
 	}
 
-	c.JSON(http.StatusCreated, fmt.Sprintf("id: %v, user_id: %v, role: %v", id, user_id, role))
+	if purchase, err := services.GetPurchaseByID(id); err != nil {
+		c.JSON(http.StatusBadRequest, fmt.Sprint(err))
+		return
+	} else {
+		c.JSON(http.StatusAccepted, purchase)
+		return
+	}
 }
