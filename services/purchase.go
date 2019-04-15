@@ -4,12 +4,16 @@ import (
 	"workshop/config"
 	"workshop/db"
 	"workshop/models"
+	"workshop/tools"
 )
 
 var database = db.DBPurchases{}
 
 func CreatePurchase(purchase models.Purchase) (models.Purchase, error) {
-	purchase.GenerateID()
+	if !tools.ValidateString(purchase.ID) {
+		purchase.GenerateID()
+	}
+
 	purchase.Status = config.NEW
 	return purchase, database.Save(purchase.ID, purchase)
 }
