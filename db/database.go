@@ -43,12 +43,21 @@ func (dbp *DBPurchases) Update(key string, purchase models.Purchase) (interface{
 }
 
 func (dbp *DBPurchases) Delete(key string) string {
-	delete(localdb, key)
-	if _, ok := localdb[key]; !ok {
-		return fmt.Sprintf("Purchase id:" + key + " deleted ")
-	} else {
-		return fmt.Sprintf("Purchase id:" + key + " cant be deleted ")
+	var message = " purchase " + key + " doesn't exist"
+	if _, ok := localdb[key]; ok {
+		resultado := models.Purchase{}
+		resultado = localdb[key].(models.Purchase)
+		if resultado.Status == config.FINISHED {
+			return fmt.Sprintf("Purchase id:" + key + " has final status, cant be deleted ")
+		}
+		delete(localdb, key)
+		if _, ok := localdb[key]; !ok {
+			message = fmt.Sprintf("Purchase id:" + key + " deleted ")
+		} else {
+			message = fmt.Sprintf("Purchase id:" + key + " cant be deleted ")
+		}
 	}
+	return message
 }
 
 func init() {
