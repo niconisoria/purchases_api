@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"workshop/models"
 	"workshop/services"
+	"workshop/tools"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,12 +35,30 @@ func GetPurchases(c *gin.Context) {
 	c.JSON(http.StatusCreated, services.GetAllPurchases())
 }
 
+func UpdatePurchase(c *gin.Context) {
+	id := c.Param("id")
+	purchase := models.Purchase{}
+
+	if err := c.BindJSON(&purchase); err != nil {
+		c.JSON(http.StatusBadRequest, "Invalid data type or format")
+		return
+	}
+	if !purchase.IsValid() {
+		c.JSON(http.StatusBadRequest, "Invalid purchase params")
+		return
+	}
+	newPurchase, err := services.UpdatePurchase(id, purchase)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+	c.JSON(http.StatusCreated, newPurchase)
+}
+
 func ReadPurchases(c *gin.Context) {
 	id := c.Param("id")
-	user_id := c.Query("user_id")
-	role := c.GetHeader("role")
-	//var a = validateString(id)
-	if id == "" || user_id == "" || role == "" {
+
+	if isValid := tools.ValidateString(id); !isValid {
 		c.JSON(http.StatusBadRequest, "invalid params")
 		return
 	}
@@ -51,4 +70,15 @@ func ReadPurchases(c *gin.Context) {
 		c.JSON(http.StatusAccepted, purchase)
 		return
 	}
+}
+
+func DeletePurchase(c *gin.Context) {
+	id := c.Param("id")
+
+	if isValid := tools.ValidateString(id); !isValid {
+		c.JSON(http.StatusBadRequest, "invalid params")
+		return
+	}
+	c.JSON(http.StatusAccepted, fmt.Sprint(services.DeletePurchase(id)))
+	return
 }

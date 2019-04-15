@@ -10,7 +10,6 @@ var database = db.DBPurchases{}
 
 func CreatePurchase(purchase models.Purchase) (models.Purchase, error) {
 	purchase.GenerateID()
-	var a = validateString("we")
 	purchase.Status = config.NEW
 	return purchase, database.Save(purchase.ID, purchase)
 }
@@ -31,5 +30,17 @@ func GetPurchaseByID(key string) (interface{}, error) {
 	} else {
 		return purchase, nil
 	}
+}
 
+func UpdatePurchase(key string, purchase models.Purchase) (interface{}, error) {
+	if purchase, err := database.Update(key, purchase); err != nil {
+		return nil, err
+	} else {
+		return purchase, nil
+	}
+
+}
+
+func DeletePurchase(key string) string {
+	return database.Delete(key)
 }

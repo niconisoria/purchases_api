@@ -30,8 +30,24 @@ func (dbp *DBPurchases) GetById(key string) (interface{}, error) {
 		return localdb[key], nil
 	} else {
 		return nil, errors.New(fmt.Sprintf("Purchase with key %v not found ", key))
-		//fmt.Errorf("Purchase with key %v not found ", key)
+	}
+}
 
+func (dbp *DBPurchases) Update(key string, purchase models.Purchase) (interface{}, error) {
+	if _, ok := localdb[key]; ok {
+		localdb[key] = purchase
+		return localdb[key], nil
+	} else {
+		return nil, errors.New(fmt.Sprintf("Purchase with key %v not found ", key))
+	}
+}
+
+func (dbp *DBPurchases) Delete(key string) string {
+	delete(localdb, key)
+	if _, ok := localdb[key]; !ok {
+		return fmt.Sprintf("Purchase id:" + key + " deleted ")
+	} else {
+		return fmt.Sprintf("Purchase id:" + key + " cant be deleted ")
 	}
 }
 

@@ -10,7 +10,6 @@ import (
 )
 
 var router = gin.Default()
-var a = validateString("")
 
 func main() {
 	routes()
@@ -25,9 +24,8 @@ func routes() {
 	router.POST("/purchases", onlyAdmin, controllers.CreatePurchase)
 	router.GET("/purchases", controllers.GetPurchases)
 	router.GET("/purchases/:id", controllers.ReadPurchases)
-
-	router.PUT("/purchases/:id")
-	router.DELETE("/purchases/:id")
+	router.PUT("/purchases/:id", onlyAdmin, controllers.UpdatePurchase)
+	router.DELETE("/purchases/:id", onlyAdmin, controllers.DeletePurchase)
 }
 
 func onlyAdmin(c *gin.Context) {
