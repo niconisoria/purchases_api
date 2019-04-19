@@ -32,7 +32,7 @@ func CreatePurchase(c *gin.Context) {
 }
 
 func GetPurchases(c *gin.Context) {
-	c.JSON(http.StatusCreated, services.GetAllPurchases())
+	c.JSON(http.StatusOK, services.GetAllPurchases())
 }
 
 func UpdatePurchase(c *gin.Context) {
@@ -43,13 +43,9 @@ func UpdatePurchase(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "Invalid data type or format")
 		return
 	}
-	if !purchase.IsValid() {
-		c.JSON(http.StatusBadRequest, "Invalid purchase params")
-		return
-	}
 	newPurchase, err := services.UpdatePurchase(id, purchase)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 	c.JSON(http.StatusCreated, newPurchase)
@@ -67,7 +63,7 @@ func ReadPurchases(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, fmt.Sprint(err))
 		return
 	} else {
-		c.JSON(http.StatusAccepted, purchase)
+		c.JSON(http.StatusOK, purchase)
 		return
 	}
 }

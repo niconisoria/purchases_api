@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"workshop/controllers"
-	"workshop/db"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,10 +11,10 @@ var router = gin.Default()
 
 func main() {
 	routes()
-	var db = db.DBPurchases{}
-	for k, val := range db.GetAll() {
-		fmt.Printf("Key: %v - Value: %#v \n", k, val)
-	}
+	// var db = db.DBPurchases{}
+	// for k, val := range db.GetAll() {
+	// 	fmt.Printf("Key: %v - Value: %#v \n", k, val)
+	// }
 	router.Run(":8080")
 }
 

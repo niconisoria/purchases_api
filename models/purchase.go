@@ -10,6 +10,7 @@ type Purchase struct {
 	Title  string  `json:"title"`
 	Status string  `json:"status"`
 	Amount float32 `json:"amount"`
+	User   User    `json:"user"`
 }
 
 func (p *Purchase) IsValid() bool {

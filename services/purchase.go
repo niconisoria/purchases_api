@@ -1,10 +1,12 @@
 package services
 
 import (
+	"encoding/json"
 	"workshop/config"
 	"workshop/db"
 	"workshop/models"
 	"workshop/tools"
+	"workshop/utils"
 )
 
 var database = db.DBPurchases{}
@@ -37,12 +39,28 @@ func GetPurchaseByID(key string) (interface{}, error) {
 }
 
 func UpdatePurchase(key string, purchase models.Purchase) (interface{}, error) {
-	if purchase, err := database.Update(key, purchase); err != nil {
+	savedPurchase, err := database.GetById(key)
+	if err != nil {
 		return nil, err
-	} else {
-		return purchase, nil
+	}
+	currentPurchase := models.Purchase{}
+	if err := json.Unmarshal(utils.InterfaceToBytes(savedPurchase), &currentPurchase); err != nil {
+		return nil, err
+	}
+	if purchase.Amount != currentPurchase.Amount && purchase.Amount > 0 {
+		currentPurchase.Amount = purchase.Amount
+	}
+	if purchase.Title != currentPurchase.Title && purchase.Title != "" {
+		currentPurchase.Title = purchase.Title
+	}
+	if purchase.Image != currentPurchase.Image && purchase.Image != "" {
+		currentPurchase.Image = purchase.Image
+	}
+	if purchase.Status != currentPurchase.Status && purchase.Status != "" {
+		currentPurchase.Status = purchase.Status
 	}
 
+	return database.Update(key, currentPurchase)
 }
 
 func DeletePurchase(key string) string {

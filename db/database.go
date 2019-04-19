@@ -10,6 +10,7 @@ import (
 )
 
 var localdb map[string]interface{}
+var users = map[int]models.User{}
 
 type DBPurchases struct{}
 
@@ -63,6 +64,16 @@ func (dbp *DBPurchases) Delete(key string) string {
 func init() {
 	fmt.Println("--------------------- INIT db ---------------------")
 	localdb = map[string]interface{}{}
+	users = map[int]models.User{}
+	for i := 1; i <= 3; i++ {
+		u := models.User{
+			DNI:      faker.RandomInt(20000000, 40000000),
+			ID:       int64(i),
+			Name:     faker.Name().FirstName(),
+			LastName: faker.Name().LastName(),
+		}
+		users[i] = u
+	}
 
 	for i := 1; i <= 10; i++ {
 		id := fmt.Sprintf("%v", i)
@@ -75,10 +86,13 @@ func init() {
 		switch i % 3 {
 		case 0:
 			purchase.Status = config.FINISHED
+			purchase.User = users[1]
 		case 1:
 			purchase.Status = config.NEW
+			purchase.User = users[2]
 		case 2:
 			purchase.Status = config.CANCELLED
+			purchase.User = users[3]
 		}
 		localdb[id] = purchase
 	}
