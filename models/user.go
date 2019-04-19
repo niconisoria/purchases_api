@@ -12,3 +12,7 @@ type User struct {
 func (u *User) FullName() string {
 	return fmt.Sprintf("%v %v", u.Name, u.LastName)
 }
+
+func (u *User) IsValid() bool {
+	return false
+}
