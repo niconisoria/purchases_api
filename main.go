@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 	"workshop/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -15,7 +16,12 @@ func main() {
 	// for k, val := range db.GetAll() {
 	// 	fmt.Printf("Key: %v - Value: %#v \n", k, val)
 	// }
-	router.Run(":8080")
+
+	if port := os.Getenv("PORT"); port != "" {
+		router.Run(":" + port)
+	} else {
+		router.Run(":8080")
+	}
 }
 
 func routes() {
