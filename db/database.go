@@ -80,7 +80,7 @@ func init() {
 		purchase := models.Purchase{
 			Amount: faker.Commerce().Price(),
 			ID:     id,
-			Image:  faker.Internet().Url(),
+			Image:  fmt.Sprintf("https://loremflickr.com/320/240?random=%v", i),
 			Title:  faker.Commerce().ProductName(),
 		}
 		switch i % 3 {
