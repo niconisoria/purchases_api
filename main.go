@@ -26,10 +26,10 @@ func main() {
 
 func routes() {
 	router.POST("/purchases", controllers.CreatePurchase)
-	router.GET("/purchases", checkQueryParams, controllers.GetPurchases)
-	router.GET("/purchases/:id", checkQueryParams, controllers.ReadPurchases)
-	router.PUT("/purchases/:id", onlyAdmin, controllers.UpdatePurchase)
-	router.DELETE("/purchases/:id", onlyAdmin, controllers.DeletePurchase)
+	router.GET("/purchases", controllers.GetPurchases)
+	router.GET("/purchases/:id", controllers.ReadPurchases)
+	router.PUT("/purchases/:id", controllers.UpdatePurchase)
+	router.DELETE("/purchases/:id", controllers.DeletePurchase)
 
 	router.POST("/users")
 	router.GET("/users")
