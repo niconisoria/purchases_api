@@ -20,11 +20,11 @@ func CreatePurchase(purchase models.Purchase) (models.Purchase, error) {
 	return purchase, database.Save(purchase.ID, purchase)
 }
 
-func GetAllPurchases() map[string]models.Purchase {
-	result := map[string]models.Purchase{}
-	for k, purchase := range database.GetAll() {
+func GetAllPurchases() []models.Purchase {
+	result := []models.Purchase{}
+	for _, purchase := range database.GetAll() {
 		if p, ok := purchase.(models.Purchase); ok {
-			result[k] = p
+			result = append(result, p)
 		}
 	}
 	return result
