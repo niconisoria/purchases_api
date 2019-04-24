@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"os"
+	"workshop/config"
 	"workshop/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -25,11 +26,11 @@ func main() {
 }
 
 func routes() {
-	router.POST("/purchases", controllers.CreatePurchase)
+	router.POST("/purchases", challenge, controllers.CreatePurchase)
 	router.GET("/purchases", controllers.GetPurchases)
 	router.GET("/purchases/:id", controllers.ReadPurchases)
-	router.PUT("/purchases/:id", controllers.UpdatePurchase)
-	router.DELETE("/purchases/:id", controllers.DeletePurchase)
+	router.PUT("/purchases/:id", challenge, controllers.UpdatePurchase)
+	router.DELETE("/purchases/:id", challenge, controllers.DeletePurchase)
 
 	router.POST("/users")
 	router.GET("/users")
@@ -47,5 +48,12 @@ func checkQueryParams(c *gin.Context) {
 func onlyAdmin(c *gin.Context) {
 	if role := c.GetHeader("role"); role != "admin" {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, "Unauthorized!")
+	}
+}
+
+func challenge(c *gin.Context) {
+	if config.IsProduction() {
+		c.AbortWithStatusJSON(http.StatusMethodNotAllowed, "Only gets allowed, for challenge purpose! - visit github.com/seansa/Workshop_go-UTNFRT")
+		return
 	}
 }
