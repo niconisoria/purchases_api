@@ -78,10 +78,11 @@ func init() {
 	for i := 1; i <= 10; i++ {
 		id := fmt.Sprintf("%v", i)
 		purchase := models.Purchase{
-			Amount: faker.Commerce().Price(),
-			ID:     id,
-			Image:  fmt.Sprintf("https://loremflickr.com/320/240?random=%v", i),
-			Title:  faker.Commerce().ProductName(),
+			Amount:       faker.Commerce().Price(),
+			ID:           id,
+			Image:        fmt.Sprintf("https://loremflickr.com/320/240?random=%v", i),
+			Title:        faker.Commerce().ProductName(),
+			CreationDate: faker.Date().Forward(10000000),
 		}
 		switch i % 3 {
 		case 0:
