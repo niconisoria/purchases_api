@@ -3,6 +3,7 @@ package db
 import (
 	"errors"
 	"fmt"
+	"time"
 	"workshop/config"
 	"workshop/models"
 
@@ -74,6 +75,11 @@ func init() {
 		}
 		users[i] = u
 	}
+	layout := "2006-01-02T15:04:05.000Z"
+	str := "2018-11-12T11:45:26.371Z"
+	str2 := "2019-11-12T11:45:26.371Z"
+	t1, _ := time.Parse(layout, str)
+	t2, _ := time.Parse(layout, str2)
 
 	for i := 1; i <= 10; i++ {
 		id := fmt.Sprintf("%v", i)
@@ -82,7 +88,7 @@ func init() {
 			ID:           id,
 			Image:        fmt.Sprintf("https://loremflickr.com/320/240?random=%v", i),
 			Title:        faker.Commerce().ProductName(),
-			CreationDate: faker.Date().Forward(10000000),
+			CreationDate: faker.Date().Between(t1, t2),
 		}
 		switch i % 3 {
 		case 0:
