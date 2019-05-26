@@ -3,21 +3,24 @@ package main
 import (
 	"net/http"
 	"os"
-	"workshop/config"
 	"workshop/controllers"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq"
+)
+
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "niconisoria"
+	password = ""
+	dbname   = ""
 )
 
 var router = gin.Default()
 
 func main() {
 	routes()
-	// var db = db.DBPurchases{}
-	// for k, val := range db.GetAll() {
-	// 	fmt.Printf("Key: %v - Value: %#v \n", k, val)
-	// }
-
 	if port := os.Getenv("PORT"); port != "" {
 		router.Run(":" + port)
 	} else {
@@ -26,17 +29,17 @@ func main() {
 }
 
 func routes() {
-	router.POST("/purchases", challenge, controllers.CreatePurchase)
+	router.POST("/purchases", onlyAdmin, controllers.CreatePurchase)
 	router.GET("/purchases", controllers.GetPurchases)
 	router.GET("/purchases/:id", controllers.ReadPurchases)
-	router.PUT("/purchases/:id", challenge, controllers.UpdatePurchase)
-	router.DELETE("/purchases/:id", challenge, controllers.DeletePurchase)
+	router.PUT("/purchases/:id", onlyAdmin, controllers.UpdatePurchase)
+	router.DELETE("/purchases/:id", onlyAdmin, controllers.DeletePurchase)
 
-	router.POST("/users")
-	router.GET("/users")
-	router.GET("/users/:id")
-	router.PUT("/users/:id")
-	router.DELETE("/users/:id")
+	router.POST("/users", controllers.CreateUser)
+	router.GET("/users", controllers.GetUsers)
+	router.GET("/users/:id", controllers.ReadUsers)
+	router.PUT("/users/:id", controllers.UpdateUser)
+	router.DELETE("/users/:id", controllers.DeleteUser)
 }
 
 func checkQueryParams(c *gin.Context) {
@@ -48,12 +51,5 @@ func checkQueryParams(c *gin.Context) {
 func onlyAdmin(c *gin.Context) {
 	if role := c.GetHeader("role"); role != "admin" {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, "Unauthorized!")
-	}
-}
-
-func challenge(c *gin.Context) {
-	if config.IsProduction() {
-		c.AbortWithStatusJSON(http.StatusMethodNotAllowed, "Only gets allowed, for challenge purpose! - visit github.com/seansa/Workshop_go-UTNFRT")
-		return
 	}
 }
