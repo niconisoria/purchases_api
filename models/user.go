@@ -14,5 +14,5 @@ func (u *User) FullName() string {
 }
 
 func (u *User) IsValid() bool {
-	return false
+	return u.DNI >= 1111111
 }
