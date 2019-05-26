@@ -1,50 +1,39 @@
 package services
 
 import (
-	"encoding/json"
+	"fmt"
 	"workshop/config"
 	"workshop/db"
 	"workshop/models"
 	"workshop/tools"
-	"workshop/utils"
 )
 
-var database = db.DBPurchases{}
+var dbPurchases = db.DBPurchases
 
-func CreatePurchase(purchase models.Purchase) (models.Purchase, error) {
+func CreatePurchase(purchase models.Purchase, user models.User) (models.Purchase, error) {
 	if !tools.ValidateString(purchase.ID) {
 		purchase.GenerateID()
 	}
 
 	purchase.Status = config.NEW
-	return purchase, database.Save(purchase.ID, purchase)
+	return dbPurchases.Save(purchase, user)
 }
 
 func GetAllPurchases() []models.Purchase {
-	result := []models.Purchase{}
-	for _, purchase := range database.GetAll() {
-		if p, ok := purchase.(models.Purchase); ok {
-			result = append(result, p)
-		}
-	}
-	return result
+	return dbPurchases.GetAll()
 }
 
 func GetPurchaseByID(key string) (interface{}, error) {
-	if purchase, error := database.GetById(key); error != nil {
+	purchase, error := dbPurchases.GetByID(key)
+	if error != nil {
 		return nil, error
-	} else {
-		return purchase, nil
 	}
+	return purchase, nil
 }
 
 func UpdatePurchase(key string, purchase models.Purchase) (interface{}, error) {
-	savedPurchase, err := database.GetById(key)
+	currentPurchase, err := dbPurchases.GetByID(key)
 	if err != nil {
-		return nil, err
-	}
-	currentPurchase := models.Purchase{}
-	if err := json.Unmarshal(utils.InterfaceToBytes(savedPurchase), &currentPurchase); err != nil {
 		return nil, err
 	}
 	if purchase.Amount != currentPurchase.Amount && purchase.Amount > 0 {
@@ -60,9 +49,21 @@ func UpdatePurchase(key string, purchase models.Purchase) (interface{}, error) {
 		currentPurchase.Status = purchase.Status
 	}
 
-	return database.Update(key, currentPurchase)
+	return currentPurchase, dbPurchases.Update(key, currentPurchase)
 }
 
 func DeletePurchase(key string) string {
-	return database.Delete(key)
+	resultado, err := dbPurchases.GetByID(key)
+	if err != nil {
+		return fmt.Sprintf("Purchase id: " + key + " doesn't exist")
+	}
+	if resultado.Status == config.FINISHED {
+		return fmt.Sprintf("Purchase id: " + key + " has final status, cant be deleted")
+	}
+	err = dbPurchases.Delete(key)
+	if err != nil {
+		return fmt.Sprintf("Purchase id: " + key + " can't be deleted")
+	}
+
+	return fmt.Sprintf("Purchase id: " + key + " deleted")
 }
