@@ -17,7 +17,7 @@ type Purchase struct {
 }
 
 func (p *Purchase) IsValid() bool {
-	return p.Amount > 0 && p.User.IsValid()
+	return p.Amount > 0
 }
 
 func (p *Purchase) GenerateID() {
