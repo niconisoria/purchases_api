@@ -11,14 +11,6 @@ import (
 	"syreclabs.com/go/faker"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "niconisoria"
-	password = ""
-	dbname   = ""
-)
-
 var db = initDB()
 var DBUsers = Users{}
 var DBPurchases = Purchases{}
