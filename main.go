@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"workshop/controllers"
@@ -29,6 +30,10 @@ func main() {
 }
 
 func routes() {
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, fmt.Sprint("Welcome to Purchases API"))
+	})
+
 	router.POST("/purchases", onlyAdmin, controllers.CreatePurchase)
 	router.GET("/purchases", controllers.GetPurchases)
 	router.GET("/purchases/:id", controllers.ReadPurchases)
