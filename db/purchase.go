@@ -2,8 +2,8 @@ package db
 
 import (
 	"errors"
+	"purchases-api/models"
 	"strconv"
-	"workshop/models"
 )
 
 type Purchases struct{}

@@ -1,6 +1,6 @@
 package db
 
-import "workshop/models"
+import "purchases-api/models"
 
 type Users struct{}
 

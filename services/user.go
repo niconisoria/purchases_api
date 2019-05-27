@@ -2,8 +2,8 @@ package services
 
 import (
 	"fmt"
-	"workshop/db"
-	"workshop/models"
+	"purchases-api/db"
+	"purchases-api/models"
 )
 
 var dbUsers = db.DBUsers

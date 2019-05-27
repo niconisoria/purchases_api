@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"workshop/controllers"
+	"purchases-api/controllers"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"

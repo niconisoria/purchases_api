@@ -2,10 +2,10 @@ package services
 
 import (
 	"fmt"
-	"workshop/config"
-	"workshop/db"
-	"workshop/models"
-	"workshop/tools"
+	"purchases-api/config"
+	"purchases-api/db"
+	"purchases-api/models"
+	"purchases-api/tools"
 )
 
 var dbPurchases = db.DBPurchases

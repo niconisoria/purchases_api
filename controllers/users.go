@@ -3,9 +3,9 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"workshop/models"
-	"workshop/services"
-	"workshop/tools"
+	"purchases-api/models"
+	"purchases-api/services"
+	"purchases-api/tools"
 
 	"github.com/gin-gonic/gin"
 )

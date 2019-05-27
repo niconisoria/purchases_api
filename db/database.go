@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"workshop/config"
-	"workshop/models"
+	"purchases-api/config"
+	"purchases-api/models"
 
 	_ "github.com/lib/pq"
 	"syreclabs.com/go/faker"
