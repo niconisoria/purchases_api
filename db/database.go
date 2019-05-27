@@ -53,6 +53,7 @@ func init() {
 			Title:  faker.Commerce().ProductName(),
 		}
 		purchase.GenerateID()
+		DBPurchases.Save(purchase, user)
 	}
 
 }
