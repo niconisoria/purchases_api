@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"workshop/config"
 	"workshop/models"
 
 	_ "github.com/lib/pq"
@@ -51,6 +52,7 @@ func init() {
 			Amount: faker.Commerce().Price(),
 			Image:  fmt.Sprintf("https://loremflickr.com/320/240?random=%v", i),
 			Title:  faker.Commerce().ProductName(),
+			Status: config.NEW,
 		}
 		purchase.GenerateID()
 		DBPurchases.Save(purchase, user)
