@@ -3,6 +3,8 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
 	"workshop/models"
 
 	_ "github.com/lib/pq"
@@ -22,12 +24,9 @@ var DBUsers = Users{}
 var DBPurchases = Purchases{}
 
 func initDB() *sql.DB {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return db
