@@ -13,6 +13,12 @@ func (u *User) FullName() string {
 	return fmt.Sprintf("%v %v", u.Name, u.LastName)
 }
 
+//The reason why the endPoint didn't allow to add new purchases.
+
+/*func (u *User) IsValid() bool {
+	return false
+}*/
+
 func (u *User) IsValid() bool {
 	return u.DNI >= 1111111
 }

@@ -10,14 +10,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "niconisoria"
-	password = ""
-	dbname   = ""
-)
-
 var router = gin.Default()
 
 func main() {
